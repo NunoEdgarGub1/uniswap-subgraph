@@ -1,94 +1,14 @@
-# Directory is created by sourcing each time the factory creates a uniswap contract
+# Directory contains a list of all exchanges on Uniswap.
 type Directory @entity {
-    id: ID! # Factory Address
-    exchangeCount: Int!
-    exchanges: [Exchange!]! @derivedFrom(field: "factoryID")
+  id: ID!
+  exchangeCount: Int!
+  exchanges: [Exchange!]! @derivedFrom(field: "directory")
 }
 
 type Exchange @entity {
-    # These Five represent /api/v1/directory
-    id: ID!                         # Uniswap Exchange address
-    tokenAddress: Bytes!
-    # There is no good way to get these, since not all contracts follow erc20.
-    tokenSymbol: String
-    tokenName: String
-    tokenDecimals: Int
-
-    # Below is data gathered from having the current Uniwap contracts tracked.
-    # They need to be hardcoded until we support dynamic contract adding
-    # The top 6 are hardcoded. See subgraph.yaml
-
-    # These, along with the top 5, represent api/v1/exchange
-    price: BigInt!                      # price is the ratio of eth/token, i.e. NOT USD
-    fee: String!                       # storing as string until we get fractional BigInts
-    version: Int!
-    ethLiquidity: BigInt!
-    ethDecimals: Int!
-    tokenLiquidity: BigInt!
-
-    # These represent fields for api/v1/ticker
-    startTime: BigInt!
-    endTime: BigInt
-    highPrice: BigInt                   # NOTE - high price and low price don't always correlate with data from coinmarketcap. someone can make a lopsided swap
-    lowPrice: BigInt
-    weightedAvgPrice: BigInt!
-    priceChange: BigInt!
-#    priceChangePercent: BigInt!         # NOT IMPLEMENTED - will add V2
-    lastTradePrice: BigInt!
-    lastTradeEthQty: BigInt!
-    lastTradeErc20Qty: BigInt!
-    tradeVolume: BigInt!                # total tokens traded EVER
-    totalValue: BigInt!                 # totalValue is accumulation of trade price X trade volume, so that we can calculation weightedAvgPrice each trade
-    tradeCount: Int!
-
-    # Extra Fields ontop of provided api
-    totalUniToken: BigInt!
-
-    # Fields used to help derived relationship
-    factoryID: String!              # used for @derivedFrom of Factory
-    tokenHolders: [UserExchangeBalance!]! @derivedFrom(field: "exchangeAddress")
-    txs: [Transaction!]!  @derivedFrom(field: "exchangeAddress")
-
-}
-
-type User @entity {
-    id: ID! # user eth adddress
-    exchangeBalances: [UserExchangeBalance!]!  @derivedFrom(field: "userAddress")
-    txs: [Transaction!]!  @derivedFrom(field: "userAddress")
-}
-
-# Left out allowance for now, because handleApprove never gets called
-type UserExchangeBalance @entity {
-    id: ID!                     # ID is concatenation of token and addr. i.e. DAI-0xkashkd34....
-    userAddress: Bytes!         # used for @derivedFrom of User
-    exchangeAddress: Bytes!        # used for @derivedFrom of TrackedExchange
-
-    # Liquidity Provider Data
-    ethDeposited: BigInt!      # where negative means eth was exchanged for tokens
-    tokensDeposited: BigInt!    # where negative means tokens were exchanged for eth
-    uniTokensMinted: BigInt!
-    uniTokensBurned: BigInt!
-    ethWithdrawn: BigInt!
-    tokensWithdrawn: BigInt!
-#    currentEthProfit: BigInt!      # NOT IMPLEMENTED - will add V2
-#    currentTokenProfit: BigInt!    # NOT IMPLEMENTED - will add V2
-
-    # Trading Data
-    ethBought: BigInt!
-    tokensBought: BigInt!
-    totalEthFeesPaid: BigInt!
-    totalTokenFeesPaid: BigInt!
-}
-
-type Transaction @entity {
-    id: ID!             # Transaction Hash
-    event: String!
-    block: BigInt!
-    timeStamp: Int!
-    exchangeAddress: Bytes!
-    tokenSymbol: String!
-    userAddress: Bytes!
-    ethAmount: BigInt!   # where negative means you sold eth to buy tokens
-    tokenAmount: BigInt! # where negative means you sold tokens to buy eth
-    fee: BigInt # not !, because Add and Remove Liquidity don't have fee
+  id: ID!
+  tokenAddress: Bytes!
+  ethLiquidity: BigInt!
+  tokenLiquidity: BigInt!
+  directory: Directory!
 }
