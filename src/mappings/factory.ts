@@ -1,8 +1,10 @@
-import { BigInt } from "@graphprotocol/graph-ts";
+import { BigInt, EthereumBlock } from "@graphprotocol/graph-ts";
 
 import { NewExchange } from "../../generated/Factory/Factory";
 import { Exchange as ExchangeTemplate } from "../../generated/Factory/templates";
 import { Directory, Exchange } from "../../generated/schema";
+
+export function handleFactoryBlock(block: EthereumBlock): void {}
 
 export function handleNewExchange(event: NewExchange): void {
   // Create the uniswap directory on demand

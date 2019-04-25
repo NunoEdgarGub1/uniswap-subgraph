@@ -1,4 +1,9 @@
-import { BigDecimal, BigInt } from "@graphprotocol/graph-ts";
+import {
+  BigDecimal,
+  BigInt,
+  EthereumBlock,
+  EthereumCall
+} from "@graphprotocol/graph-ts";
 
 // Although imported from BAT, these can be used for all exchanges
 import {
@@ -9,6 +14,10 @@ import {
 } from "../../generated/Factory/templates/Exchange/Exchange";
 
 import { Exchange } from "../../generated/schema";
+
+export function handleExchangeBlock(block: EthereumBlock): void {}
+
+export function handleAddLiquidityCall(call: EthereumCall): void {}
 
 export function handleTokenPurchase(event: TokenPurchase): void {
   let exchangeId = event.address.toHex();

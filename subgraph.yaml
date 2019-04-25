@@ -20,6 +20,10 @@ dataSources:
       abis:
         - name: Factory
           file: ./abis/factory.json
+      blockHandlers:
+        - handler: handleFactoryBlock
+          filter:
+            kind: call
       eventHandlers:
         - event: NewExchange(address,address)
           handler: handleNewExchange
@@ -42,6 +46,13 @@ dataSources:
           abis:
             - name: Exchange
               file: ./abis/exchange.json
+          blockHandlers:
+            - handler: handleExchangeBlock
+              filter:
+                kind: call
+          callHandlers:
+            - function: addLiquidity(uint256,uint256,uint256)
+              handler: handleAddLiquidityCall
           eventHandlers:
             - event: TokenPurchase(address,uint256,uint256)
               handler: handleTokenPurchase
