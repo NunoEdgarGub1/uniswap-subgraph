@@ -51,8 +51,8 @@ dataSources:
               filter:
                 kind: call
           callHandlers:
-            - function: addLiquidity(uint256,uint256,uint256)
-              handler: handleAddLiquidityCall
+            - function: setup(address)
+              handler: handleSetup
           eventHandlers:
             - event: TokenPurchase(address,uint256,uint256)
               handler: handleTokenPurchase

@@ -17,7 +17,7 @@ import { Exchange } from "../../generated/schema";
 
 export function handleExchangeBlock(block: EthereumBlock): void {}
 
-export function handleAddLiquidityCall(call: EthereumCall): void {}
+export function handleSetup(call: EthereumCall): void {}
 
 export function handleTokenPurchase(event: TokenPurchase): void {
   let exchangeId = event.address.toHex();
